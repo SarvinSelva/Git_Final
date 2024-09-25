@@ -1,0 +1,9 @@
+---
+- name : "File_Copy"
+  hosts : all
+  remote_user: 206786907@tfayd.com
+  tasks :
+  - name : File create to remote server
+    win_file :
+      path : D:\Sarvin_L&D\Welcome1.txt
+      state : touch

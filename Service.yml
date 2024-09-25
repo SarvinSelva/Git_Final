@@ -1,0 +1,11 @@
+---
+- name : Check Windows service
+  hosts : stage
+  remote_user: 206786907@tfayd.com
+  tasks :
+  - name : Checking Windows service on ushwswt00107
+    win_shell : Get-Service | where Name -like '*asp*'
+    register : windows_Service
+  - name: Print Windows service status
+    debug:
+      var: windows_Service.stdout_lines

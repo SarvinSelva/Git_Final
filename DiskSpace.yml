@@ -1,0 +1,13 @@
+---
+- name : Check Disk Space
+  hosts : stage
+  remote_user: 206786907@tfayd.com
+  tasks :
+  - name : Checking Disk Space on ushwswt00107
+    win_shell : Get-Volume | Select-object -Property DriveLetter , Size, SizeRemaining
+    register : windows_disk_space
+  - name: Print disk space on Windows
+    debug:
+      var: windows_disk_space.stdout_lines
+
+

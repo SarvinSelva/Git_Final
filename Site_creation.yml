@@ -1,0 +1,38 @@
+---
+- name: "Site_Creation"
+  hosts : all
+  remote_user: 206786907@tfayd.com
+  tasks:
+  - name : Folder creation in Remote server
+    win_file :
+      path : D:\WebApps\Lime
+      state : directory
+
+  - name : Moving Files to root Directory
+    win_copy :
+      src : /home/sarvin/Plays/index.html
+      dest : D:\WebApps\Lime
+      remote_src: present
+
+  - name: "Create a apppool"
+    win_iis_webapppool:
+      name: SweetLime
+      state: started
+
+  - name: "Create a site called Lime"
+    win_iis_website:
+      name: Lime
+      state: Started
+      port: 80
+      hostname: localhost
+      application_pool: SweetLime
+      physical_path: D:\Webapps
+      parameters: logfile.directory:D:\Webapps\Logs1
+      register: website
+
+  - name: "Add api to website"
+    win_iis_webapplication:
+      name: Lime
+      site: Lime
+      state: present
+      physical_path: D:\webapps\Lime

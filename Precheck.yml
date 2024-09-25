@@ -1,0 +1,29 @@
+---
+- name: Health checks of Sites and AppPool in IIS
+  hosts: stage
+  remote_user: 206786907@tfayd.com
+  tasks:
+    - name: Script to fetch the current status
+      win_shell: |
+        $websites = Get-Website | Select-Object @{Name='Type';Expression={'Site'}}, Name, State | ConvertTo-Csv -NoTypeInformation
+        $appPools = Get-IISApppool | Select-Object @{Name='Type';Expression={'AppPool'}}, Name, State | ConvertTo-Csv -NoTypeInformation
+        $csvOutput = $websites + "n"+ $appPools
+        $csvOutput | Out-String
+      register: output
+
+    - name: Print website hosted in IIS
+      debug:
+        msg: "{{ output.stdout }}"
+
+    - name: CSV cusomization for output
+      set_fact:
+        csv_content: |
+          Type,Name,State
+          {{ output.stdout | regex_replace('^.*\n', '') }}
+
+    - name: Save CSV data to a local file
+      ansible.builtin.copy:
+        content: "{{ csv_content }}"
+        dest: /home/sarvin/Plays/PreCheck_{{ ansible_hostname }}.csv
+        mode: '0644'
+      delegate_to: localhost

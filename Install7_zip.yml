@@ -1,0 +1,8 @@
+---
+- name: Install 7-zip application
+  hosts: stage
+  tasks:
+    - name: Install 7-zip using chocolatey
+      win_chocolatey:
+        name: 7zip
+        state: absent

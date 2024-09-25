@@ -1,0 +1,7 @@
+---
+- name: Ping server
+  hosts : stage
+  remote_user: 206786907@tfayd.com
+  tasks:
+    - name: Ping the server
+      ping:

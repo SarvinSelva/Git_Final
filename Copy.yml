@@ -1,0 +1,9 @@
+---
+- name : "File_Copy"
+  hosts : stage
+  tasks :
+  - name : File create to remote server
+    win_copy :
+      src : /home/sarvin/ansible-config/Plays/Create.yml
+      dest : D:\Sarvin_L&D\
+      remote_src: present
